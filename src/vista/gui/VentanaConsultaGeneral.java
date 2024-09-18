@@ -96,6 +96,7 @@ public class VentanaConsultaGeneral extends JFrame implements ActionListener{
 		  
 		    double sumaPromedios = 0;
 		    int cantidadEstudiantes = lista.size();
+		    
 		    StringBuilder texto = new StringBuilder();
 		    texto.append("Listado de Estudiantes: \n");
 		    texto.append("Número de estudiantes obtenidos: " + lista.size()+"\n\n");
@@ -109,10 +110,9 @@ public class VentanaConsultaGeneral extends JFrame implements ActionListener{
 		        texto.append("Nota3: ").append(estudiante.getNota3()).append("\n");
 		        texto.append("Promedio: ").append(estudiante.getPromedio()).append("\n\n");
 		    }
-
-		    double promedioTotal = sumaPromedios / cantidadEstudiantes;
-		    double factor = Math.pow(10, 2);
-			 double averageRounded = Math.round(promedioTotal * factor) / factor;
+		    
+		    
+		    double averageRounded= miCoordinador.promedioTotalEstudiante(sumaPromedios, cantidadEstudiantes);
 		    texto.append("Promedio Total: ").append(averageRounded).append("\n");
 
 		    areaInformacion.setText(texto.toString());
@@ -121,7 +121,7 @@ public class VentanaConsultaGeneral extends JFrame implements ActionListener{
 
 	public void setCoordinador(Coordinador miCoordinador) {
 		
-		this.miCoordinador = miCoordinador;
+		this.miCoordinador = miCoordinador; 
 	}
 
 	@Override

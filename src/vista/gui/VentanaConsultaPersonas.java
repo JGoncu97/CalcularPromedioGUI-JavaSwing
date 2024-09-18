@@ -2,6 +2,8 @@ package vista.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -21,15 +23,15 @@ import conector.Coordinador;
 import modelo.operaciones.Procesos;
 import modelo.vo.EstudianteVO;
 
-public class VentanaConsultaPersonas extends JFrame {
+public class VentanaConsultaPersonas extends JFrame implements ActionListener {
 
 	  private JPanel panelPrincipal;
 	    private JTable tablaPersonas;
 	    DefaultTableModel modelo;
 	    private Coordinador miCoordinador;
 	    
-	    private JTextField txtDocumento;  // Campo para ingresar el documento
-	    private JButton btnConsultar;     // Botón para consultar un estudiante individual
+	    private JTextField txtDocumento;  
+	    private JButton btnConsultar;     
 	    
 	    public VentanaConsultaPersonas() {
 	        setSize(507, 400);
@@ -66,6 +68,7 @@ public class VentanaConsultaPersonas extends JFrame {
 	        // Botón de consulta
 	        btnConsultar = new JButton("Consultar");
 	        btnConsultar.setBounds(320, 60, 100, 30);
+	        btnConsultar.addActionListener(this);
 	        panelPrincipal.add(btnConsultar);
 	        
 	        JScrollPane scrollPane = new JScrollPane();
@@ -75,11 +78,10 @@ public class VentanaConsultaPersonas extends JFrame {
 	        tablaPersonas = new JTable();
 	        scrollPane.setViewportView(tablaPersonas);
 	        
-	        // Crear el modelo de la tabla
+	        
 	        crearModelo();
 	        
-	        // Acción del botón Consultar
-	        btnConsultar.addActionListener(e -> consultarEstudiantePorDocumento());
+	        
 	    }
 
 	    private void crearModelo() {
@@ -90,8 +92,12 @@ public class VentanaConsultaPersonas extends JFrame {
 	        tablaPersonas.setModel(modelo);
 	    }
 
-	    // Llenar la tabla con la lista completa de estudiantes
+	    
 	    public void llenarTabla() {
+	    	  if (miCoordinador == null) {
+		            return;
+		        }
+
 	        ArrayList<EstudianteVO> lista = miCoordinador.obtenerTodosEstudiantes();
 	        DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
 	        model.setRowCount(0);  
@@ -100,7 +106,7 @@ public class VentanaConsultaPersonas extends JFrame {
 	        }
 	    }
 
-	    // Método para consultar estudiante por documento
+	   
 	    private void consultarEstudiantePorDocumento() {
 	        String documento = txtDocumento.getText();
 	        
@@ -109,16 +115,16 @@ public class VentanaConsultaPersonas extends JFrame {
 	            return;
 	        }
 
-	        // Llamar al método del coordinador para obtener un estudiante por documento
+	        
 	        EstudianteVO estudiante = miCoordinador.obtenerEstudiante(documento);
 
 	        if (estudiante != null) {
-	            // Si el estudiante existe, llenamos la tabla con solo ese estudiante
+	            
 	            DefaultTableModel model = (DefaultTableModel) tablaPersonas.getModel();
-	            model.setRowCount(0);  // Limpiamos la tabla
+	            model.setRowCount(0);  
 	            model.addRow(new Object[]{estudiante.getDocumento(), estudiante.getNombre(), estudiante.getPromedio()});
 	        } else {
-	            // Si el estudiante no existe, mostramos un mensaje de error
+	            
 	            JOptionPane.showMessageDialog(this, "Estudiante no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
 	        }
 	    }
@@ -126,6 +132,14 @@ public class VentanaConsultaPersonas extends JFrame {
 	public void setCoordinador(Coordinador miCoordinador) {
 		
 		this.miCoordinador = miCoordinador;
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()== btnConsultar) {
+			consultarEstudiantePorDocumento();
+		}
 		
 	}
 	

@@ -174,7 +174,7 @@ public class VentanaOperaciones extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btnCalcular) {
 			registrarEstudiante();
-			limpiarCampos();
+			
 		}
 		else if (e.getSource()==btnImprimirTotal) {
 			
@@ -209,6 +209,7 @@ public class VentanaOperaciones extends JFrame implements ActionListener {
 	        
 	        if (nota1 < 0 || nota1 > 5 || nota2 < 0 || nota2 > 5 || nota3 < 0 || nota3 > 5) {
 	            JOptionPane.showMessageDialog(this, "Las notas deben estar entre 0 y 5.", "Error", JOptionPane.ERROR_MESSAGE);
+	            limparNotas();
 	            return;
 	        }
 	    	
@@ -236,6 +237,7 @@ public class VentanaOperaciones extends JFrame implements ActionListener {
 	 	        } else {
 	 	            lblResultado.setForeground(Color.RED);
 	 	        }
+	 	       limpiarCampos();
 	            return; 
 	        
 	        } 
@@ -248,6 +250,12 @@ public class VentanaOperaciones extends JFrame implements ActionListener {
 	public void limpiarCampos() {
 		txtDocumento.setText("");
 		txtNombre.setText("");
+		txtNota1.setText("");
+		txtNota2.setText("");
+		txtNota3.setText("");
+	}
+	
+	public void limparNotas() {
 		txtNota1.setText("");
 		txtNota2.setText("");
 		txtNota3.setText("");

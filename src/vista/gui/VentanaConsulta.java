@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +27,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 public class VentanaConsulta extends JFrame implements ActionListener{
@@ -44,13 +46,13 @@ public class VentanaConsulta extends JFrame implements ActionListener{
 	private JLabel lblResActualizacion;
 	private JTable tablaEstudiantes;
 	private Coordinador miCoordinador;
+	private JTextArea instructivo;
 	private ModeloDatos miModelo;
+	DefaultTableModel modelo;
 
-	/**
-	 * Create the frame.
-	 */
+	
 	public VentanaConsulta() {
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setSize(800, 600);
 		getContentPane().setLayout(null);
 		setLocationRelativeTo(null);
@@ -141,10 +143,10 @@ public class VentanaConsulta extends JFrame implements ActionListener{
 		lblResultado.setBounds(31, 237, 396, 31);
 		panelPrincipal.add(lblResultado);
 		
-		btnConsultar = new JButton();
-		btnConsultar.setText("...");
+		btnConsultar = new JButton("Consultar Tabla");
+		
 		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnConsultar.setBounds(364, 60, 63, 31);
+		btnConsultar.setBounds(454, 278, 250, 31);
 		btnConsultar.addActionListener(this);
 		panelPrincipal.add(btnConsultar);
 		
@@ -156,7 +158,7 @@ public class VentanaConsulta extends JFrame implements ActionListener{
 		txtDoc = new JTextField();
 		txtDoc.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtDoc.setColumns(10);
-		txtDoc.setBounds(300, 60, 63, 31);
+		txtDoc.setBounds(300, 60, 127, 31);
 		panelPrincipal.add(txtDoc);
 		
 		btnActualizar = new JButton();
@@ -178,22 +180,29 @@ public class VentanaConsulta extends JFrame implements ActionListener{
 		lblResActualizacion.setBounds(28, 325, 396, 31);
 		panelPrincipal.add(lblResActualizacion);
 		
-		   // Configuración de la tabla
+		   
         tablaEstudiantes = new JTable();
         JScrollPane scroll = new JScrollPane(tablaEstudiantes);
         scroll.setBounds(10, 350, 750, 200);
         panelPrincipal.add(scroll);
-
         
-        DefaultTableModel model = new DefaultTableModel() {
-        	 @Override
-             public boolean isCellEditable(int row, int column) {
-                 return false; 
-             }
-        };
-        model.setColumnIdentifiers(new Object[]{"Documento", "Nombre", "Nota1", "Nota2", "Nota3", "Promedio"});
-        tablaEstudiantes.setModel(model);
+        instructivo = new JTextArea();
+        instructivo.setBounds(450,60,250,150);
+        instructivo.setText("Instrucciones: \n\n"
+        		+ "Eliminar: Si desea eliminar debe ingresar \n"
+        		+ "(Solamente el numero de documento) del \n"
+        		+ "estudiante \n\n"
+        		+ "Actualizar: Consulte la tabla y ingrese los\n"
+        		+ "datos de la persona que desea modificar \n"
+        		+ "(Debe ingresar todos los campos)");
+        instructivo.setEditable(false);
+        instructivo.setBorder(BorderFactory.createLineBorder(Color.black));
+        panelPrincipal.add(instructivo);
+        		
+        
+        crearModelo();
 	}
+       
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -210,12 +219,22 @@ public class VentanaConsulta extends JFrame implements ActionListener{
 			
 	}
 	
+	 private void crearModelo() {
+	        modelo = new DefaultTableModel();
+	        modelo.addColumn("Documento");
+	        modelo.addColumn("Nombre");
+	        modelo.addColumn("Nota1");
+	        modelo.addColumn("Nota2");
+	        modelo.addColumn("Nota3");
+	        modelo.addColumn("Promedio");
+	        tablaEstudiantes.setModel(modelo);
+	    }
+	
 	  private void llenarTablaEstudiantes() {
 	        if (miCoordinador == null) {
 	            return;
 	        }
 
-	       
 	        ArrayList<EstudianteVO> lista = miCoordinador.obtenerTodosEstudiantes();
 	        DefaultTableModel model = (DefaultTableModel) tablaEstudiantes.getModel();
 	        model.setRowCount(0); 

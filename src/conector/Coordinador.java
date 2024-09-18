@@ -45,6 +45,11 @@ public class Coordinador {
 	        double promedio = calcularPromedio(estudiante);
 	        return misProcesos.calcularDefinitiva(promedio);  
 	    }
+	    
+	    public double promedioTotalEstudiante(double sumPromedio , int cantEstudiante) {
+	    	
+	    		return misProcesos.promedioTotal(sumPromedio, cantEstudiante);
+	    }
 
 	   
 	    public void setVentanaP(VentanaOperaciones ventanaPpal) {

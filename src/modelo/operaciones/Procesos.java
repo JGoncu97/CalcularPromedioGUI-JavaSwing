@@ -63,7 +63,15 @@ public class Procesos {
 	        return null;  
 	    }
 
-
+	 public double promedioTotal(double sumaPromedio, int cantEstudiante) {
+		 
+		 double promedioTotal = sumaPromedio / cantEstudiante;
+		 double factor = Math.pow(10, 2);
+		 double averageRounded = Math.round(promedioTotal * factor) / factor;
+		return averageRounded;
+		 
+	 }
+	 
 	 public ArrayList<EstudianteVO> obtenerTodosEstudiantes() {
 	        return listaEstudiantes;
 	    }
